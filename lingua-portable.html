@@ -1,0 +1,1645 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f7f4" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Lingua" />
+    <meta
+      name="description"
+      content="A personal Czech, English, and Japanese translator and vocabulary journal."
+    />
+    <title>Lingua — your personal language journal</title>
+    <style>
+:root {
+  color-scheme: light;
+  --ink: #1d2925;
+  --muted: #78817b;
+  --green: #2e7158;
+  --green-dark: #245c47;
+  --mint: #e9f2ec;
+  --paper: #f7f7f4;
+  --white: #fff;
+  --line: #e9eae5;
+  --soft: #f3f5f1;
+  --orange: #e8a66f;
+  font-family: "DM Sans", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 87% 2%, rgba(221, 235, 222, 0.62), transparent 25rem),
+    var(--paper);
+  color: var(--ink);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+.app-shell {
+  width: min(1120px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+.topbar {
+  height: 82px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(29, 41, 37, 0.07);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: "Manrope", sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -1.1px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border-radius: 10px 10px 10px 3px;
+  background: var(--green);
+  color: white;
+  font-size: 17px;
+  letter-spacing: -0.5px;
+}
+
+.brand-period {
+  color: #e3a06d;
+}
+
+.topbar-note {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #64a47b;
+  box-shadow: 0 0 0 4px rgba(100, 164, 123, 0.12);
+}
+
+.intro {
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 4px 30px;
+}
+
+.eyebrow {
+  margin: 0 0 11px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 13px;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -2.7px;
+  line-height: 1.08;
+}
+
+h1 span {
+  color: var(--green);
+}
+
+.intro-description {
+  max-width: 475px;
+  margin-bottom: 0;
+  color: #6d7771;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.language-stamp {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 10px 37px 0 24px;
+  padding: 17px 20px;
+  border: 1px solid rgba(46, 113, 88, 0.15);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.54);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+  transform: rotate(-5deg);
+}
+
+.stamp-divider {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #b6cabb;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.panel {
+  min-width: 0;
+  border: 1px solid rgba(31, 47, 39, 0.065);
+  border-radius: 18px;
+  background: var(--white);
+  box-shadow: 0 10px 35px rgba(40, 59, 48, 0.045);
+}
+
+.translator {
+  padding: 26px 26px 20px;
+}
+
+.dictionary {
+  display: flex;
+  min-height: 560px;
+  flex-direction: column;
+  padding: 26px 26px 18px;
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.panel-heading .eyebrow {
+  margin-bottom: 7px;
+  font-size: 9px;
+  letter-spacing: 1.3px;
+}
+
+h2 {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.65px;
+}
+
+.heading-icon,
+.book-icon {
+  display: grid;
+  width: 37px;
+  height: 37px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--mint);
+  color: var(--green);
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.book-icon {
+  font-size: 19px;
+}
+
+.language-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+  gap: 9px;
+  align-items: end;
+  margin-bottom: 19px;
+}
+
+.language-field,
+.text-entry {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  color: #727d76;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.language-field select {
+  width: 100%;
+  height: 42px;
+  padding: 0 26px 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  outline: none;
+  background-color: #fbfcfa;
+  color: #334139;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.language-field select:focus,
+.text-entry textarea:focus,
+.search-box:focus-within {
+  border-color: #90b8a0;
+  box-shadow: 0 0 0 3px rgba(46, 113, 88, 0.08);
+}
+
+.swap-button {
+  display: grid;
+  width: 32px;
+  height: 38px;
+  place-items: center;
+  margin-bottom: 2px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--green);
+  cursor: pointer;
+  font-size: 20px;
+  transition: background 0.18s, transform 0.18s;
+}
+
+.swap-button:hover {
+  background: var(--mint);
+  transform: rotate(180deg);
+}
+
+.text-entry {
+  position: relative;
+}
+
+.text-entry textarea {
+  width: 100%;
+  min-height: 115px;
+  padding: 13px 13px 28px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  outline: none;
+  background: #fbfcfa;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.6;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.text-entry textarea::placeholder {
+  color: #a6aea8;
+}
+
+.character-count {
+  position: absolute;
+  right: 11px;
+  bottom: 10px;
+  color: #a1a9a2;
+  font-size: 9px;
+}
+
+.translate-button {
+  display: flex;
+  width: 100%;
+  height: 45px;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--green);
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.18s, transform 0.18s;
+}
+
+.translate-button:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px);
+}
+
+.translate-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.button-arrow {
+  font-size: 15px;
+}
+
+.form-message,
+.storage-message {
+  min-height: 16px;
+  margin: 8px 0 0;
+  color: #ad583f;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.form-message:empty,
+.storage-message:empty {
+  display: none;
+}
+
+.result-card {
+  margin-top: 2px;
+  padding: 15px;
+  border: 1px solid #e4ede6;
+  border-radius: 12px;
+  background: #f7faf7;
+  animation: rise-in 0.25s ease both;
+}
+
+.result-card[hidden] {
+  display: none;
+}
+
+.result-topline,
+.result-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.copy-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: #758279;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.icon-button:hover,
+.copy-word-button:hover {
+  color: var(--green-dark);
+}
+
+.result-text {
+  min-height: 30px;
+  margin: 12px 0;
+  color: var(--green-dark);
+  font-family: "Manrope", sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.result-pronunciation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: -4px 0 12px;
+  color: #78847b;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.result-pronunciation[hidden] {
+  display: none;
+}
+
+.result-direction {
+  color: #849087;
+  font-size: 9px;
+}
+
+.save-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: #e8f1e9;
+  color: var(--green-dark);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.save-button:hover {
+  background: #dcebdd;
+}
+
+.save-button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.privacy-note {
+  margin: 12px 0 0;
+  color: #9aa39c;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.dictionary-heading {
+  margin-bottom: 17px;
+}
+
+.manual-entry {
+  margin-bottom: 15px;
+  padding: 14px;
+  border: 1px solid #e8eee8;
+  border-radius: 11px;
+  background: #f9fbf8;
+}
+
+.manual-entry-title {
+  margin: 0 0 11px;
+  color: #435249;
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.manual-entry-languages,
+.manual-entry-words {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.manual-entry-words {
+  margin-top: 10px;
+}
+
+.manual-entry .language-field {
+  gap: 6px;
+}
+
+.manual-entry .language-field select,
+.manual-word-field input {
+  height: 37px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: #334139;
+  font-size: 10px;
+}
+
+.manual-entry .language-field select {
+  padding: 0 23px 0 9px;
+}
+
+.manual-word-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.manual-pronunciation-field {
+  margin-top: 10px;
+}
+
+.manual-word-field input {
+  width: 100%;
+  min-width: 0;
+  padding: 0 9px;
+}
+
+.manual-entry .language-field select:focus,
+.manual-word-field input:focus {
+  border-color: #90b8a0;
+  box-shadow: 0 0 0 3px rgba(46, 113, 88, 0.08);
+}
+
+.manual-save-button {
+  width: 100%;
+  height: 38px;
+  margin-top: 11px;
+  border: 0;
+  border-radius: 8px;
+  background: #e8f1e9;
+  color: var(--green-dark);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  transition: background 0.18s;
+}
+
+.manual-save-button:hover {
+  background: #dcebdd;
+}
+
+.manual-entry-message {
+  margin-bottom: 0;
+}
+
+.manual-entry-message:empty {
+  display: none;
+}
+
+.word-count {
+  display: inline-grid;
+  min-width: 21px;
+  height: 21px;
+  place-items: center;
+  margin-left: 4px;
+  padding: 0 5px;
+  border-radius: 7px;
+  background: #edf3ee;
+  color: var(--green);
+  font-family: "DM Sans", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0;
+  vertical-align: 2px;
+}
+
+.search-box {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fcfcfb;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.search-icon {
+  color: #89958c;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.search-box input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 11px;
+}
+
+.search-box input::placeholder {
+  color: #a4aca6;
+}
+
+kbd {
+  display: grid;
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #e8ebe6;
+  border-radius: 5px;
+  color: #89938c;
+  font-family: inherit;
+  font-size: 10px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 7px;
+  margin: 14px 0 5px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-row::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  padding: 6px 11px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background: transparent;
+  color: #828b84;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.filter-chip:hover {
+  background: #f5f7f4;
+}
+
+.filter-chip.is-active {
+  border-color: #dfeae0;
+  background: #edf4ee;
+  color: var(--green-dark);
+}
+
+.word-list {
+  flex: 1;
+}
+
+.word-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 1px;
+  border-bottom: 1px solid #f0f1ed;
+  animation: rise-in 0.2s ease both;
+}
+
+.word-item-main {
+  min-width: 0;
+}
+
+.word-item-topline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.word-original {
+  max-width: 235px;
+  overflow: hidden;
+  color: #293630;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.language-tag {
+  padding: 3px 6px;
+  border-radius: 5px;
+  background: #f3f5f2;
+  color: #738078;
+  font-size: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.word-translation {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  color: #77827a;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.word-translation-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.word-pronunciation {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0 0;
+  color: #78847b;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.copy-word-button {
+  flex: 0 0 auto;
+  padding: 3px 6px;
+  border: 0;
+  border-radius: 5px;
+  background: #f3f5f2;
+  color: #738078;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.word-meta {
+  margin: 6px 0 0;
+  color: #a1a9a2;
+  font-size: 9px;
+}
+
+.delete-word {
+  align-self: flex-start;
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #a2aaa3;
+  cursor: pointer;
+  font-size: 10px;
+  opacity: 0;
+  transition: background 0.18s, color 0.18s, opacity 0.18s;
+}
+
+.word-item:hover .delete-word,
+.delete-word:focus-visible {
+  opacity: 1;
+}
+
+.delete-word:hover {
+  background: #fbefec;
+  color: #b65c45;
+}
+
+.empty-state {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 20px;
+  text-align: center;
+}
+
+.empty-state[hidden] {
+  display: none;
+}
+
+.empty-illustration {
+  display: grid;
+  width: 47px;
+  height: 47px;
+  place-items: center;
+  margin-bottom: 14px;
+  border-radius: 16px 16px 16px 5px;
+  background: #edf4ee;
+  color: var(--green);
+  font-family: serif;
+  font-size: 24px;
+  transform: rotate(-5deg);
+}
+
+.empty-state h3 {
+  margin: 0 0 7px;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.empty-state p {
+  max-width: 220px;
+  margin: 0;
+  color: #8d978f;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 2px 25px;
+  color: #9aa29b;
+  font-size: 10px;
+}
+
+.page-footer span:last-child span {
+  padding-left: 4px;
+  color: #d29d6f;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 1200px) {
+  .app-shell {
+    width: min(1040px, calc(100% - 80px));
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: min(600px, calc(100% - 36px));
+  }
+
+  .topbar {
+    height: 68px;
+  }
+
+  .intro {
+    min-height: 220px;
+  }
+
+  .language-stamp {
+    margin-right: 5px;
+    gap: 9px;
+    padding: 13px 14px;
+    font-size: 10px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .dictionary {
+    min-height: 430px;
+  }
+
+  .delete-word {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    width: calc(100% - 28px);
+  }
+
+  .topbar {
+    height: 60px;
+  }
+
+  .topbar-note {
+    gap: 7px;
+    font-size: 10px;
+  }
+
+  .intro {
+    min-height: auto;
+    padding: 34px 1px 27px;
+  }
+
+  h1 {
+    font-size: 39px;
+    letter-spacing: -2px;
+  }
+
+  .intro-description {
+    max-width: 330px;
+    font-size: 12px;
+  }
+
+  .language-stamp {
+    display: none;
+  }
+
+  .translator,
+  .dictionary {
+    padding: 21px 17px 16px;
+    border-radius: 15px;
+  }
+
+  .language-row {
+    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .language-field select {
+    padding-right: 20px;
+    padding-left: 8px;
+    font-size: 10px;
+  }
+
+  .swap-button {
+    width: 28px;
+    font-size: 18px;
+  }
+
+  .page-footer {
+    gap: 12px;
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Lingua home">
+          <span class="brand-mark" aria-hidden="true">L</span>
+          <span>lingua<span class="brand-period">.</span></span>
+        </a>
+        <div class="topbar-note">
+          <span class="status-dot" aria-hidden="true"></span>
+          Your words, all in one place
+        </div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div class="intro-copy">
+            <p class="eyebrow">A little more fluent, every day</p>
+            <h1 id="page-title">Words travel.<br /><span>Keep them close.</span></h1>
+            <p class="intro-description">
+              Translate a word or phrase, then save it to your personal language journal.
+              Made for the words you want to remember.
+            </p>
+          </div>
+          <div class="language-stamp" aria-label="Czech, English, Japanese">
+            <span>ČE</span><span class="stamp-divider"></span><span>EN</span>
+            <span class="stamp-divider"></span><span>日本語</span>
+          </div>
+        </section>
+
+        <section class="workspace" aria-label="Translator and saved words">
+          <section class="translator panel" aria-labelledby="translate-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Your next discovery</p>
+                <h2 id="translate-title">Translate a word</h2>
+              </div>
+              <span class="heading-icon" aria-hidden="true">Aa</span>
+            </div>
+
+            <form id="translate-form">
+              <div class="language-row">
+                <label class="language-field">
+                  <span class="field-label">From</span>
+                  <select id="source-language" aria-label="Translate from">
+                    <option value="cs">Czech · Čeština</option>
+                    <option value="en" selected>English</option>
+                    <option value="ja">Japanese · 日本語</option>
+                    <option value="de">German · Deutsch</option>
+                    <option value="fr">French · Français</option>
+                    <option value="es">Spanish · Español</option>
+                    <option value="it">Italian · Italiano</option>
+                    <option value="pt">Portuguese · Português</option>
+                    <option value="nl">Dutch · Nederlands</option>
+                    <option value="pl">Polish · Polski</option>
+                    <option value="ru">Russian · Русский</option>
+                    <option value="zh-CN">Chinese · 中文</option>
+                    <option value="ko">Korean · 한국어</option>
+                    <option value="ar">Arabic · العربية</option>
+                    <option value="auto">Auto-detect</option>
+                  </select>
+                </label>
+                <button class="swap-button" id="swap-languages" type="button" aria-label="Swap languages">
+                  <span aria-hidden="true">⇄</span>
+                </button>
+                <label class="language-field">
+                  <span class="field-label">To</span>
+                  <select id="target-language" aria-label="Translate to">
+                    <option value="cs">Czech · Čeština</option>
+                    <option value="en">English</option>
+                    <option value="ja" selected>Japanese · 日本語</option>
+                    <option value="de">German · Deutsch</option>
+                    <option value="fr">French · Français</option>
+                    <option value="es">Spanish · Español</option>
+                    <option value="it">Italian · Italiano</option>
+                    <option value="pt">Portuguese · Português</option>
+                    <option value="nl">Dutch · Nederlands</option>
+                    <option value="pl">Polish · Polski</option>
+                    <option value="ru">Russian · Русский</option>
+                    <option value="zh-CN">Chinese · 中文</option>
+                    <option value="ko">Korean · 한국어</option>
+                    <option value="ar">Arabic · العربية</option>
+                  </select>
+                </label>
+              </div>
+
+              <label class="text-entry" for="source-text">
+                <span class="field-label">Your word or phrase</span>
+                <textarea
+                  id="source-text"
+                  name="text"
+                  maxlength="500"
+                  placeholder="Type something you want to remember…"
+                  required
+                ></textarea>
+                <span class="character-count" id="character-count">0 / 500</span>
+              </label>
+
+              <button class="translate-button" id="translate-button" type="submit">
+                <span>Translate</span><span class="button-arrow" aria-hidden="true">↗</span>
+              </button>
+              <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+            </form>
+
+            <section class="result-card" id="result-card" aria-label="Translation result" hidden>
+              <div class="result-topline">
+                <span class="field-label">Translation</span>
+                <div class="copy-actions">
+                  <button class="icon-button" id="copy-original" type="button">Copy word</button>
+                  <button class="icon-button" id="copy-translation" type="button">Copy translation</button>
+                </div>
+              </div>
+              <p class="result-text" id="result-text"></p>
+              <p class="result-pronunciation" id="result-pronunciation" hidden>
+                <span id="result-pronunciation-text"></span>
+                <button class="copy-word-button" id="copy-pronunciation" type="button">Copy</button>
+              </p>
+              <div class="result-footer">
+                <span class="result-direction" id="result-direction"></span>
+                <button class="save-button" id="save-translation" type="button">
+                  <span aria-hidden="true">＋</span> Save to my words
+                </button>
+              </div>
+            </section>
+            <p class="privacy-note">Translations are provided online. Your saved words stay in this browser.</p>
+          </section>
+
+          <section class="dictionary panel" aria-labelledby="dictionary-title">
+            <div class="panel-heading dictionary-heading">
+              <div>
+                <p class="eyebrow">Your personal collection</p>
+                <h2 id="dictionary-title">My words <span class="word-count" id="word-count">0</span></h2>
+              </div>
+              <span class="book-icon" aria-hidden="true">▤</span>
+            </div>
+
+            <form class="manual-entry" id="manual-entry-form">
+              <p class="manual-entry-title">Add a word without translating</p>
+              <div class="manual-entry-languages">
+                <label class="language-field">
+                  <span class="field-label">Word language</span>
+                  <select id="manual-source-language" aria-label="Word language">
+                    <option value="cs">Czech · Čeština</option>
+                    <option value="en" selected>English</option>
+                    <option value="ja">Japanese · 日本語</option>
+                    <option value="de">German · Deutsch</option>
+                    <option value="fr">French · Français</option>
+                    <option value="es">Spanish · Español</option>
+                    <option value="it">Italian · Italiano</option>
+                    <option value="pt">Portuguese · Português</option>
+                    <option value="nl">Dutch · Nederlands</option>
+                    <option value="pl">Polish · Polski</option>
+                    <option value="ru">Russian · Русский</option>
+                    <option value="zh-CN">Chinese · 中文</option>
+                    <option value="ko">Korean · 한국어</option>
+                    <option value="ar">Arabic · العربية</option>
+                  </select>
+                </label>
+                <label class="language-field">
+                  <span class="field-label">Translation language</span>
+                  <select id="manual-target-language" aria-label="Translation language">
+                    <option value="cs">Czech · Čeština</option>
+                    <option value="en">English</option>
+                    <option value="ja" selected>Japanese · 日本語</option>
+                    <option value="de">German · Deutsch</option>
+                    <option value="fr">French · Français</option>
+                    <option value="es">Spanish · Español</option>
+                    <option value="it">Italian · Italiano</option>
+                    <option value="pt">Portuguese · Português</option>
+                    <option value="nl">Dutch · Nederlands</option>
+                    <option value="pl">Polish · Polski</option>
+                    <option value="ru">Russian · Русский</option>
+                    <option value="zh-CN">Chinese · 中文</option>
+                    <option value="ko">Korean · 한국어</option>
+                    <option value="ar">Arabic · العربية</option>
+                  </select>
+                </label>
+              </div>
+              <div class="manual-entry-words">
+                <label class="manual-word-field">
+                  <span class="field-label">Word</span>
+                  <input id="manual-original" type="text" maxlength="500" placeholder="e.g. hello" required />
+                </label>
+                <label class="manual-word-field">
+                  <span class="field-label">Translation</span>
+                  <input id="manual-translation" type="text" maxlength="500" placeholder="e.g. こんにちは" required />
+                </label>
+              </div>
+              <label class="manual-word-field manual-pronunciation-field">
+                <span class="field-label">Pronunciation (optional)</span>
+                <input id="manual-pronunciation" type="text" maxlength="500" placeholder="e.g. konnichiwa" />
+              </label>
+              <button class="manual-save-button" type="submit">＋ Save word</button>
+              <p class="form-message manual-entry-message" id="manual-entry-message" role="status" aria-live="polite"></p>
+            </form>
+
+            <label class="search-box">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input id="search-words" type="search" placeholder="Find a saved word…" autocomplete="off" />
+              <kbd>/</kbd>
+            </label>
+
+            <div class="filter-row" role="group" aria-label="Filter saved words">
+              <button class="filter-chip is-active" data-filter="all" type="button" aria-pressed="true">All</button>
+              <button class="filter-chip" data-filter="cs" type="button" aria-pressed="false">Czech</button>
+              <button class="filter-chip" data-filter="en" type="button" aria-pressed="false">English</button>
+              <button class="filter-chip" data-filter="ja" type="button" aria-pressed="false">Japanese</button>
+            </div>
+
+            <div class="word-list" id="word-list" aria-live="polite"></div>
+            <div class="empty-state" id="empty-state">
+              <span class="empty-illustration" aria-hidden="true">あ</span>
+              <h3>Your word collection starts here</h3>
+              <p>Add a word and translation above, or translate one to start your personal dictionary.</p>
+            </div>
+            <p class="storage-message" id="storage-message" role="status" aria-live="polite"></p>
+          </section>
+        </section>
+
+        <footer class="page-footer">
+          <span>Small words. Bigger worlds.</span>
+          <span>Saved privately on this device <span aria-hidden="true">✳</span></span>
+        </footer>
+      </main>
+    </div>
+    <script>
+const STORAGE_KEY = "lingua.savedWords";
+const TRANSLATE_URL = "https://translate.googleapis.com/translate_a/single";
+const languageNames = {
+  cs: "Czech",
+  en: "English",
+  ja: "Japanese",
+  de: "German",
+  fr: "French",
+  es: "Spanish",
+  it: "Italian",
+  pt: "Portuguese",
+  nl: "Dutch",
+  pl: "Polish",
+  ru: "Russian",
+  "zh-CN": "Chinese",
+  ko: "Korean",
+  ar: "Arabic",
+  auto: "Detected language",
+};
+
+const form = document.querySelector("#translate-form");
+const sourceLanguage = document.querySelector("#source-language");
+const targetLanguage = document.querySelector("#target-language");
+const sourceText = document.querySelector("#source-text");
+const translateButton = document.querySelector("#translate-button");
+const formMessage = document.querySelector("#form-message");
+const resultCard = document.querySelector("#result-card");
+const resultText = document.querySelector("#result-text");
+const resultPronunciation = document.querySelector("#result-pronunciation");
+const resultPronunciationText = document.querySelector("#result-pronunciation-text");
+const resultDirection = document.querySelector("#result-direction");
+const saveButton = document.querySelector("#save-translation");
+const copyOriginalButton = document.querySelector("#copy-original");
+const copyButton = document.querySelector("#copy-translation");
+const copyPronunciationButton = document.querySelector("#copy-pronunciation");
+const wordList = document.querySelector("#word-list");
+const wordCount = document.querySelector("#word-count");
+const emptyState = document.querySelector("#empty-state");
+const searchInput = document.querySelector("#search-words");
+const storageMessage = document.querySelector("#storage-message");
+const characterCount = document.querySelector("#character-count");
+const manualEntryForm = document.querySelector("#manual-entry-form");
+const manualEntryMessage = document.querySelector("#manual-entry-message");
+
+let savedWords = loadSavedWords();
+let activeFilter = "all";
+let currentTranslation = null;
+let savedCurrentTranslation = false;
+
+function loadSavedWords() {
+  try {
+    const storedWords = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (!Array.isArray(storedWords)) {
+      throw new Error("Saved dictionary data has an unexpected format.");
+    }
+    return storedWords.filter(
+      (word) =>
+        word &&
+        typeof word.id === "string" &&
+        typeof word.original === "string" &&
+        typeof word.translation === "string" &&
+        typeof word.sourceLanguage === "string" &&
+        typeof word.targetLanguage === "string",
+    );
+  } catch (error) {
+    console.error("Could not load the saved dictionary.", error);
+    storageMessage.textContent = "Your saved words could not be loaded from this browser.";
+    return [];
+  }
+}
+
+function persistSavedWords() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedWords));
+    storageMessage.textContent = "";
+    return true;
+  } catch (error) {
+    console.error("Could not save the dictionary.", error);
+    storageMessage.textContent = "Could not save changes. Check this browser's storage settings.";
+    return false;
+  }
+}
+
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+    return entities[character];
+  });
+}
+
+function languageName(code) {
+  return languageNames[code] || code;
+}
+
+function renderWords() {
+  const query = searchInput.value.trim().toLocaleLowerCase();
+  const visibleWords = savedWords.filter((word) => {
+    const matchesFilter =
+      activeFilter === "all" ||
+      word.sourceLanguage === activeFilter ||
+      word.targetLanguage === activeFilter;
+    const matchesSearch =
+      !query ||
+      `${word.original} ${word.translation} ${word.pronunciation || ""} ${languageName(word.sourceLanguage)} ${languageName(word.targetLanguage)}`
+        .toLocaleLowerCase()
+        .includes(query);
+    return matchesFilter && matchesSearch;
+  });
+
+  wordCount.textContent = String(savedWords.length);
+  emptyState.hidden = visibleWords.length > 0;
+  const emptyTitle = emptyState.querySelector("h3");
+  const emptyDescription = emptyState.querySelector("p");
+  if (savedWords.length === 0) {
+    emptyTitle.textContent = "Your word collection starts here";
+    emptyDescription.textContent =
+      "Add a word and translation above, or translate one to start your personal dictionary.";
+  } else {
+    emptyTitle.textContent = query ? "No matching words" : "No words in this language yet";
+    emptyDescription.textContent = query
+      ? "Try another search or language filter."
+      : "Try another language filter, or translate a new word to save it.";
+  }
+  wordList.innerHTML = visibleWords
+    .map(
+      (word) => `
+        <article class="word-item">
+          <div class="word-item-main">
+            <div class="word-item-topline">
+              <span class="word-original" title="${escapeHtml(word.original)}">${escapeHtml(word.original)}</span>
+                <button class="copy-word-button" type="button" data-copy-value="${escapeHtml(word.original)}" aria-label="Copy word ${escapeHtml(word.original)}">Copy</button>
+                <span class="language-tag">${escapeHtml(languageName(word.sourceLanguage))}</span>
+              </div>
+              <div class="word-translation-row">
+                <p class="word-translation">${escapeHtml(word.translation)}</p>
+                <button class="copy-word-button" type="button" data-copy-value="${escapeHtml(word.translation)}" aria-label="Copy translation ${escapeHtml(word.translation)}">Copy</button>
+              </div>
+              ${word.pronunciation ? `<p class="word-pronunciation">Pronunciation: ${escapeHtml(word.pronunciation)} <button class="copy-word-button" type="button" data-copy-value="${escapeHtml(word.pronunciation)}" aria-label="Copy pronunciation ${escapeHtml(word.pronunciation)}">Copy</button></p>` : ""}
+              <p class="word-meta">${escapeHtml(languageName(word.sourceLanguage))} → ${escapeHtml(languageName(word.targetLanguage))} · ${escapeHtml(word.dateLabel)}</p>
+          </div>
+          <button class="delete-word" type="button" data-delete-id="${escapeHtml(word.id)}" aria-label="Remove ${escapeHtml(word.original)}">Remove</button>
+        </article>`,
+    )
+    .join("");
+}
+
+function setFormMessage(message) {
+  formMessage.textContent = message;
+}
+
+function renderTranslation(translation) {
+  currentTranslation = translation;
+  savedCurrentTranslation = false;
+  resultText.textContent = translation.translation;
+  resultPronunciationText.textContent = translation.pronunciation
+    ? `Pronunciation: ${translation.pronunciation}`
+    : "";
+  resultPronunciation.hidden = !translation.pronunciation;
+  resultDirection.textContent = `${languageName(translation.sourceLanguage)} → ${languageName(translation.targetLanguage)}`;
+  saveButton.disabled = false;
+  saveButton.innerHTML = '<span aria-hidden="true">＋</span> Save to my words';
+  resultCard.hidden = false;
+}
+
+function createWordEntry(word) {
+  return {
+    id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+    ...word,
+    dateLabel: new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(new Date()),
+    createdAt: Date.now(),
+  };
+}
+
+function saveWordEntry(entry) {
+  const previousWords = savedWords;
+  savedWords = [entry, ...savedWords];
+  if (!persistSavedWords()) {
+    savedWords = previousWords;
+    return false;
+  }
+  renderWords();
+  return true;
+}
+
+function needsPronunciation(text) {
+  return Array.from(text).some(
+    (character) => /\p{L}/u.test(character) && !/\p{Script=Latin}/u.test(character),
+  );
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const text = sourceText.value.trim();
+  if (!text) {
+    setFormMessage("Type a word or phrase to translate.");
+    sourceText.focus();
+    return;
+  }
+
+  setFormMessage("");
+  resultCard.hidden = true;
+  translateButton.disabled = true;
+  translateButton.querySelector("span:first-child").textContent = "Translating…";
+
+  const from = sourceLanguage.value;
+  const to = targetLanguage.value;
+  const params = new URLSearchParams({
+    client: "gtx",
+    q: text,
+    sl: from,
+    tl: to,
+    dt: "t",
+  });
+  params.append("dt", "rm");
+
+  try {
+    const response = await fetch(`${TRANSLATE_URL}?${params}`);
+    if (!response.ok) {
+      throw new Error(`Translation service returned ${response.status}.`);
+    }
+    const data = await response.json();
+    const translation = Array.isArray(data[0])
+      ? data[0].map((segment) => segment[0] || "").join("")
+      : "";
+    if (!translation) {
+      throw new Error("The translation service returned no translation.");
+    }
+
+    const detectedCode = typeof data[2] === "string" ? data[2] : "";
+    const resolvedSourceLanguage =
+      from === "auto" && detectedCode && languageNames[detectedCode]
+        ? detectedCode
+        : from;
+    const pronunciation = needsPronunciation(translation) && Array.isArray(data[0])
+      ? data[0]
+          .map((segment) => (typeof segment[2] === "string" ? segment[2] : ""))
+          .filter(Boolean)
+          .join(" ")
+      : "";
+    renderTranslation({
+      original: text,
+      translation,
+      pronunciation,
+      sourceLanguage: resolvedSourceLanguage,
+      targetLanguage: to,
+    });
+  } catch (error) {
+    console.error("Translation request failed.", error);
+    setFormMessage(
+      "Couldn't get a translation. Check your connection and language choices, then try again.",
+    );
+  } finally {
+    translateButton.disabled = false;
+    translateButton.querySelector("span:first-child").textContent = "Translate";
+  }
+});
+
+document.querySelector("#swap-languages").addEventListener("click", () => {
+  if (sourceLanguage.value === "auto") {
+    setFormMessage("Choose a source language before swapping.");
+    return;
+  }
+  const previousSource = sourceLanguage.value;
+  sourceLanguage.value = targetLanguage.value;
+  targetLanguage.value = previousSource;
+  setFormMessage("");
+});
+
+sourceText.addEventListener("input", () => {
+  characterCount.textContent = `${sourceText.value.length} / 500`;
+});
+
+saveButton.addEventListener("click", () => {
+  if (!currentTranslation || savedCurrentTranslation) return;
+
+  if (!saveWordEntry(createWordEntry(currentTranslation))) return;
+  savedCurrentTranslation = true;
+  saveButton.disabled = true;
+  saveButton.innerHTML = '<span aria-hidden="true">✓</span> Saved to my words';
+});
+
+manualEntryForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const original = document.querySelector("#manual-original").value.trim();
+  const translation = document.querySelector("#manual-translation").value.trim();
+  const pronunciation = document.querySelector("#manual-pronunciation").value.trim();
+  const sourceCode = document.querySelector("#manual-source-language").value;
+  const targetCode = document.querySelector("#manual-target-language").value;
+
+  if (!original || !translation) {
+    manualEntryMessage.textContent = "Enter both a word and its translation.";
+    return;
+  }
+  if (sourceCode === targetCode) {
+    manualEntryMessage.textContent = "Choose two different languages.";
+    return;
+  }
+
+  const entry = createWordEntry({
+    original,
+    translation,
+    pronunciation,
+    sourceLanguage: sourceCode,
+    targetLanguage: targetCode,
+  });
+  if (!saveWordEntry(entry)) return;
+
+  manualEntryForm.reset();
+  manualEntryMessage.textContent = "Word saved to your dictionary.";
+  window.setTimeout(() => {
+    manualEntryMessage.textContent = "";
+  }, 2500);
+});
+
+manualEntryForm.addEventListener("input", () => {
+  manualEntryMessage.textContent = "";
+});
+
+async function copyText(text) {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+  } catch {
+    // Fall back to the selection-based copy method for browsers that deny clipboard access.
+  }
+
+  const temporaryInput = document.createElement("textarea");
+  temporaryInput.value = text;
+  temporaryInput.setAttribute("readonly", "");
+  temporaryInput.style.position = "fixed";
+  temporaryInput.style.opacity = "0";
+  document.body.append(temporaryInput);
+  temporaryInput.select();
+  const copied = document.execCommand("copy");
+  temporaryInput.remove();
+  if (!copied) throw new Error("The browser denied clipboard access.");
+}
+
+function showCopied(button) {
+  const originalLabel = button.dataset.originalLabel || button.textContent;
+  button.dataset.originalLabel = originalLabel;
+  button.textContent = "Copied";
+  window.setTimeout(() => {
+    button.textContent = originalLabel;
+  }, 1400);
+}
+
+async function copyFromButton(button, value) {
+  try {
+    await copyText(value);
+    showCopied(button);
+    storageMessage.textContent = "";
+  } catch (error) {
+    console.error("Could not copy text.", error);
+    storageMessage.textContent = "Couldn't copy automatically. Check your browser's clipboard permissions.";
+  }
+}
+
+copyOriginalButton.addEventListener("click", () => {
+  if (currentTranslation) copyFromButton(copyOriginalButton, currentTranslation.original);
+});
+
+copyButton.addEventListener("click", () => {
+  if (currentTranslation) copyFromButton(copyButton, currentTranslation.translation);
+});
+
+copyPronunciationButton.addEventListener("click", () => {
+  if (currentTranslation?.pronunciation) {
+    copyFromButton(copyPronunciationButton, currentTranslation.pronunciation);
+  }
+});
+
+document.querySelectorAll(".filter-chip").forEach((button) => {
+  button.addEventListener("click", () => {
+    activeFilter = button.dataset.filter;
+    document.querySelectorAll(".filter-chip").forEach((chip) => {
+      const selected = chip === button;
+      chip.classList.toggle("is-active", selected);
+      chip.setAttribute("aria-pressed", String(selected));
+    });
+    renderWords();
+  });
+});
+
+searchInput.addEventListener("input", renderWords);
+
+wordList.addEventListener("click", (event) => {
+  const copyButton = event.target.closest("[data-copy-value]");
+  if (copyButton) {
+    copyFromButton(copyButton, copyButton.dataset.copyValue);
+    return;
+  }
+
+  const button = event.target.closest("[data-delete-id]");
+  if (!button) return;
+
+  const previousWords = savedWords;
+  savedWords = savedWords.filter((word) => word.id !== button.dataset.deleteId);
+  if (!persistSavedWords()) {
+    savedWords = previousWords;
+    return;
+  }
+  renderWords();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "/" &&
+    !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)
+  ) {
+    event.preventDefault();
+    searchInput.focus();
+  }
+});
+
+renderWords();
+
+if (
+  "serviceWorker" in navigator &&
+  (window.location.protocol === "https:" ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1")
+) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+      console.error("Could not register the offline app.", error);
+    });
+  });
+}
+
+  </script>
+</body>
+</html>
